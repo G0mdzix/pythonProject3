@@ -6,6 +6,18 @@ from bokeh.models import CustomJS, Slider, CheckboxGroup, PreText, TextInput
 import numpy as np
 from bokeh.plotting import ColumnDataSource, figure, show
 
+#Wzor nagrzewnicy: Q = V·ρ·cp·ΔT [kW]
+#V – strumień objętości powietrza [m³/s];
+#ρ – gęstość powietrza [1,2 kg/m³];
+#cp – ciepło właściwe powietrza [1,005 kJ/(kg·K);
+#ΔT – różnica temperatur powietrza przed i za nagrzewnicą [°C].
+
+#V - objetosc najwiekszego terrarium jakie znalazlem na necie to 1,44 m³, 150 x 80 x 120 cm
+#ρ - wartosc stala 1,2 kg/m³
+#cp - wartosc stala [1,005 kJ/(kg·K)
+#ΔT – roznica temperatur czyli do zmiennych nalezy dodac np.: T1 i T2
+
+
 # pole powierzchni przekroju poprzecznego zbiornika
 A = 1.5
 # współczynnik beta
