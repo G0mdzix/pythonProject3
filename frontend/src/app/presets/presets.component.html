@@ -1,0 +1,25 @@
+<div class="presets">
+  <h1>
+    Select preset
+  </h1>
+  <form>
+    <mat-form-field appearance="fill">
+      <mat-select (selectionChange)="selectionChanged()" placeholder="Preset" formControlName="preset" single>
+        <mat-option *ngFor="let preset of presetList" [value]="preset">
+          {{preset}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  <!--  <div *ngIf="isSelected">-->
+  <div style="margin: 30px">
+    <igx-category-chart height="1000px" width=100%
+                        [dataSource]="dummyData"
+                        chartType="line"
+                        yAxisTitle="TWh"
+                        yAxisTitleLeftMargin="5">
+    </igx-category-chart>
+
+  </div>
+
+</div>
