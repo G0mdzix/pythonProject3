@@ -7,12 +7,13 @@ import {HomeComponent} from './home/home.component';
 import {PresetsComponent} from './presets/presets.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {HttpClientModule} from "@angular/common/http";
 import {IgxCategoryChartModule} from "igniteui-angular-charts";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,9 @@ import {IgxCategoryChartModule} from "igniteui-angular-charts";
     AppRoutingModule,
     MatButtonModule,
     MatButtonToggleModule,
-
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
     HttpClientModule,
     IgxCategoryChartModule
   ],

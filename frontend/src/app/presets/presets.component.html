@@ -4,22 +4,49 @@
   </h1>
   <form>
     <mat-form-field appearance="fill">
-      <mat-select (selectionChange)="selectionChanged()" placeholder="Preset" formControlName="preset" single>
-        <mat-option *ngFor="let preset of presetList" [value]="preset">
-          {{preset}}
+      <mat-select (selectionChange)="selectionChanged($event.value)" placeholder="Preset" formControlName="preset"
+                  single>
+        <mat-option *ngFor="let presetKey of presetList.keys()" [value]="presetKey">
+          {{presetKey}}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </form>
   <!--  <div *ngIf="isSelected">-->
-  <div style="margin: 30px">
-    <igx-category-chart height="1000px" width=100%
-                        [dataSource]="dummyData"
+  <div id="chart" style="margin: 30px">
+    <igx-category-chart  height="1000px" width=100%
+                        [dataSource]="currData"
                         chartType="line"
                         yAxisTitle="TWh"
                         yAxisTitleLeftMargin="5">
     </igx-category-chart>
 
+  </div>
+
+  <!--    </div>-->
+  <div class="column">
+    <mat-form-field appearance="fill">
+      <mat-select (selectionChange)="changeSelectedHour($event.value)" placeholder="Select hour"
+                  formControlName="hours">
+        <mat-option *ngFor="let hour of hoursSelect" [value]="hour">
+          {{hour}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="column">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <input matInput [value]="tempVal" type="number" placeholder="Input temperature">
+    </mat-form-field>
+  </div>
+
+  <div class="column">
+    <button
+      style="margin-top: 20px"
+      (click)="dupa()"
+      type="button" class="btn btn-danger mr-3">Dupa
+    </button>
   </div>
 
 </div>

@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {dummyPresetList, hours} from "../../assets/dummyData";
+import {IgxCategoryChartComponent} from "igniteui-angular-charts";
 
 @Component({
   selector: 'app-presets',
@@ -7,79 +9,43 @@ import {FormBuilder, FormGroup} from "@angular/forms";
   styleUrls: ['./presets.component.css']
 })
 export class PresetsComponent implements OnInit {
-  presetList = ['Preset 1', 'Preset 2', 'Preset 3'];
-
-  dummyData = [
-    {Hour: "00:00", Temperature: 20},
-    {Hour: "00:30", Temperature: 20},
-    {Hour: "01:00", Temperature: 20},
-    {Hour: "01:30", Temperature: 20},
-    {Hour: "02:00", Temperature: 20},
-    {Hour: "02:30", Temperature: 20},
-    {Hour: "03:00", Temperature: 20},
-    {Hour: "03:30", Temperature: 20},
-    {Hour: "04:00", Temperature: 20},
-    {Hour: "04:30", Temperature: 20},
-    {Hour: "05:00", Temperature: 20},
-    {Hour: "05:30", Temperature: 20},
-    {Hour: "06:00", Temperature: 20},
-    {Hour: "06:30", Temperature: 20},
-    {Hour: "07:00", Temperature: 20},
-    {Hour: "07:30", Temperature: 20},
-    {Hour: "08:00", Temperature: 20},
-    {Hour: "08:30", Temperature: 20},
-    {Hour: "09:00", Temperature: 20},
-    {Hour: "09:30", Temperature: 20},
-    {Hour: "10:00", Temperature: 20},
-    {Hour: "10:30", Temperature: 20},
-    {Hour: "11:00", Temperature: 20},
-    {Hour: "11:30", Temperature: 20},
-    {Hour: "12:00", Temperature: 20},
-    {Hour: "12:30", Temperature: 20},
-    {Hour: "13:00", Temperature: 20},
-    {Hour: "13:30", Temperature: 20},
-    {Hour: "14:00", Temperature: 20},
-    {Hour: "14:30", Temperature: 20},
-    {Hour: "15:00", Temperature: 20},
-    {Hour: "15:30", Temperature: 20},
-    {Hour: "16:00", Temperature: 20},
-    {Hour: "16:30", Temperature: 20},
-    {Hour: "17:00", Temperature: 20},
-    {Hour: "17:30", Temperature: 20},
-    {Hour: "18:00", Temperature: 20},
-    {Hour: "18:30", Temperature: 20},
-    {Hour: "19:00", Temperature: 20},
-    {Hour: "19:30", Temperature: 20},
-    {Hour: "20:00", Temperature: 20},
-    {Hour: "20:30", Temperature: 20},
-    {Hour: "21:00", Temperature: 20},
-    {Hour: "21:30", Temperature: 20},
-    {Hour: "22:00", Temperature: 20},
-    {Hour: "22:30", Temperature: 20},
-    {Hour: "23:00", Temperature: 20},
-    {Hour: "23:30", Temperature: 20},
-  ];
-
   isSelected = false;
   selectedPreset: any;
+  hoursSelect = hours;
+  presetList = dummyPresetList;
+  currData: any;
+  currKey: any;
+  currHour: any;
+  editPreset = false;
+  tempVal: any;
+
 
   constructor() {
   }
 
   ngOnInit() {
-    //todo załadować presety
-    // this.dummyData.find('12:30')
-    // updateItem(item)
-    // {
-      this.dummyData[24].Temperature=30;
-    //}
+    //todo załadować presety z backendu
+    this.currData = this.presetList.get('Preset 1');
   }
 
-  selectionChanged() {
-    //todo załadować dane presetu
-    debugger;
-    this.isSelected = !this.isSelected;
 
+  selectionChanged(presetKey: String) {
+    this.isSelected = true;
+    this.currKey = presetKey;
+    this.currData = this.presetList.get(this.currKey);
+
+  }
+
+  toggleEditPreset() {
+    this.editPreset = true;
+  }
+
+  changeSelectedHour(hourKey: String) {
+    this.currHour = hourKey;
+    this.tempVal = this.currData.find((data: { Hour: String, Temperature: number; }) => data.Hour == hourKey).Temperature;
+  }
+
+  dupa() {
 
   }
 
