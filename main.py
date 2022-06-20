@@ -6,44 +6,64 @@ from bokeh.models import CustomJS, Slider, CheckboxGroup, PreText, TextInput
 import numpy as np
 from bokeh.plotting import ColumnDataSource, figure, show
 
-#Wzor nagrzewnicy: Q = V·ρ·cp·ΔT [kW]
-#V – strumień objętości powietrza [m³/s];
-#ρ – gęstość powietrza [1,2 kg/m³];
-#cp – ciepło właściwe powietrza [1,005 kJ/(kg·K);
-#ΔT – różnica temperatur powietrza przed i za nagrzewnicą [°C].
+# Wzor nagrzewnicy: Q = V·ρ·cp·ΔT [kW]
+# V – strumień objętości powietrza [m³/s]; = u_n?
+# ρ – gęstość powietrza [1,2 kg/m³];
+# cp – ciepło właściwe powietrza [1,005 kJ/(kg·K);
+# ΔT – różnica temperatur powietrza przed i za nagrzewnicą [°C]. - to bedzie nasz blad regulacji
 
-#V - objetosc najwiekszego terrarium jakie znalazlem na necie to 1,44 m³, 150 x 80 x 120 cm
-#ρ - wartosc stala 1,2 kg/m³
-#cp - wartosc stala [1,005 kJ/(kg·K)
-#ΔT – roznica temperatur czyli do zmiennych nalezy dodac np.: T1 i T2
+# V - objetosc najwiekszego terrarium jakie znalazlem na necie to 1,44 m³, 150 x 80 x 120 cm
+# ρ - wartosc stala 1,2 kg/m³
+# cp - wartosc stala [1,005 kJ/(kg·K)
+# ΔT – roznica temperatur czyli do zmiennych nalezy dodac np.: T1 i T2
 
+# nizej polaczenie z MySQL
+import mysql.connector
 
-# pole powierzchni przekroju poprzecznego zbiornika
-A = 1.5
-# współczynnik beta
-B = 0.035
-# okres probkowania
-T_p = 0.1
-# czas symulacji
-Tsim = 360
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="iss",
+    password="iss",
+    database="iss_projekt"
+)
+
+mycursor = mydb.cursor()
+
+mycursor.execute("SELECT * FROM ambienttemp")
+
+myresult = mycursor.fetchall()
+
+for x in myresult:
+    print("czas: ", x[1], "temperatura: ", x[2])
+
+# gęstość powietrza [1,2 kg/m³]
+A = 1.2
+# ciepło właściwe powietrza [1,005 kJ/(kg·K)
+B = 1.005
+# okres probkowania (sekundy)
+T_p = 300
+# czas symulacji (sekundy)
+Tsim = 86400
 # ilość probek
 N = int(Tsim / T_p)
 # wartość zadana
-h_target = 1.5
-u_n = 5
-# maksymalna wysokosc cieczy w zbiorniku
-h_max = 5
-# ???
+h_target = 23
+# strumień objętości powietrza [m³/s]
+u_n = 1.44
+# maksymalna temperatura w terrarium - hard ograniczenie nagrzewnicy
+h_max = 30
+# stałe wzmocnienie regulatora
 k_p = 20
-# ???
+# czas zdwojenia
 T_i = 1.5
-# ???
+# czas wyprzedzenia
 T_d = 2.5
 # natężenie dopływu
-Qd = 0.005 * u_n
+# Qd = 0.005 * u_n
 
-h_list = [4.0, 4.0]
+h_list = [20.0, 20.0]
 e_0 = h_target - h_list[0]
+# to jest nasze delta T
 e_list = [e_0]
 u_n_list = [u_n]
 
@@ -88,9 +108,10 @@ def generate_PID_data():
         # u_n_list.append(u_n)
         u_n_list.append(u_n)
         # Qd = calc_doplyw(u_n_list[-1])
-        Qd = 0.005 * u_n_list[-1]
-
-        h_new = (T_p / A) * (Qd - B * math.sqrt(h_list[-1])) + h_list[-1]
+        Qd = u_n_list[-1]
+        # Wzor nagrzewnicy: Q = V·ρ·cp·ΔT [kW] Q = T_p*A*B*u_n*e_list[i]
+        #h_new = (T_p / A) * (Qd - B * math.sqrt(h_list[-1])) + h_list[-1]
+        h_new = T_p * A * B * u_n * e_list[i]
         if h_new < 0:
             h_new = 0
         if h_new > h_max:
@@ -145,17 +166,17 @@ def pid_bokeh():
 
     source = ColumnDataSource(data=dict(t=t, h=h))
 
-    plot = figure(x_range=(0, N), y_range=(0, 5), width=400, height=400)
+    plot = figure(x_range=(0, N), y_range=(0, 35), width=400, height=400)
 
     plot.line('t', 'h', source=source, line_width=3, line_alpha=0.6)
 
-    h_target_slider = Slider(start=0, end=5, value=1.5, step=.1, title="h_target")
-    h_0_slider = Slider(start=0, end=5, value=4, step=.1, title="h_0")
-    u_n_slider = Slider(start=0, end=10, value=5, step=.1, title="u_n")
-    k_p_slider = Slider(start=0.01, end=20.0, value=20.0, step=0.01, title="k_p")
-    t_p_slider = Slider(start=0.01, end=2.00, value=0.1, step=0.01, title="T_p")
-    t_i_slider = Slider(start=1, end=5, value=1.5, step=0.1, title="T_i")
-    t_d_slider = Slider(start=1, end=5, value=2.5, step=0.1, title="T_d")
+    h_target_slider = Slider(start=15, end=30, value=25, step=1, title="h_target")
+    h_0_slider = Slider(start=0, end=50, value=4, step=.1, title="h_0")
+    u_n_slider = Slider(start=0, end=100, value=5, step=.1, title="u_n")
+    k_p_slider = Slider(start=0.01, end=200.0, value=20.0, step=0.01, title="k_p")
+    t_p_slider = Slider(start=300, end=600, value=300, step=300, title="T_p") #constant for now.
+    t_i_slider = Slider(start=1, end=50, value=1.5, step=0.1, title="T_i")
+    t_d_slider = Slider(start=1, end=50, value=2.5, step=0.1, title="T_d")
 
     callback = CustomJS(
         args=dict(source=source, h_target=h_target_slider, h_0=h_0_slider, u_n=u_n_slider, k_p=k_p_slider,
@@ -166,16 +187,16 @@ def pid_bokeh():
                 const h = data['h']
 
                 const hTarget = h_target.value;
-                const Tsim = 360;
+                const Tsim = 86400;
                 const h0 = h_0.value;
                 const Tp = T_p.value;
                 const Ti = T_i.value;
                 const Td = T_d.value;
                 const kp = k_p.value;
                 let u_n_list = [u_n.value];
-                const h_max = 5;
-                const A = 1.5;
-                const B = 0.035;
+                const h_max = 30;
+                const A = 1.2;
+                const B = 1.005;
 
                 h[0] = h0;
                 h[1] = h0;
@@ -192,11 +213,11 @@ def pid_bokeh():
                     }
                     u_n = kp * (e_list[i] + (Tp / Ti) * regulation_error_sum + (Td / Tp) * (e_list[i] - e_list[ i - 1 ]))
                     u_n_list.push(u_n)
-                    let Qd = 0.005 * u_n
+                    let Qd = u_n
 
                     let last_ind = i
 
-                    let h_new = (Tp / A) * (Qd - B * Math.sqrt( h[last_ind] )) + h[last_ind]
+                    let h_new = T_p * A * B * Qd * e_list[i]
 
                     if (h_new < 0) {
                         h_new = 0
@@ -268,9 +289,6 @@ def pid_bokeh():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    pid_local_matplotlib()
+    # pid_local_matplotlib()
 
     pid_bokeh()
-
-
-
