@@ -1,7 +1,6 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
 import {dummyPresetList, hours} from "../../assets/dummyData";
-import {IgxCategoryChartComponent} from "igniteui-angular-charts";
+import {ChartConfiguration} from 'chart.js';
 
 @Component({
   selector: 'app-presets',
@@ -9,6 +8,9 @@ import {IgxCategoryChartComponent} from "igniteui-angular-charts";
   styleUrls: ['./presets.component.css']
 })
 export class PresetsComponent implements OnInit {
+
+  lineChartData: ChartConfiguration['data'] | undefined;
+
   isSelected = false;
   selectedPreset: any;
   hoursSelect = hours;
@@ -18,22 +20,43 @@ export class PresetsComponent implements OnInit {
   currHour: any;
   editPreset = false;
   tempVal: any;
-
+  activePreset: any;
 
   constructor() {
   }
 
   ngOnInit() {
-    //todo załadować presety z backendu
-    this.currData = this.presetList.get('Preset 1');
+    //todo załadować presety i dane z backendu
+    this.activePreset='Preset 1';
+
+  }
+  activatePreset(){
+    this.activePreset=this.currKey;
+    //todo wysłąć do BE
   }
 
+  refreshChart() {
+    // @ts-ignore
+    let hours = this.currData.map(item => item.Hour);
+    // @ts-ignore
+    let temperatures = this.currData.map(item => item.Temperature);
+
+    this.lineChartData = {
+      datasets: [
+        {
+          data: temperatures,
+          label: 'Temperature',
+        },
+      ],
+      labels: hours
+    };
+  }
 
   selectionChanged(presetKey: String) {
     this.isSelected = true;
     this.currKey = presetKey;
     this.currData = this.presetList.get(this.currKey);
-
+    this.refreshChart();
   }
 
   toggleEditPreset() {
@@ -45,8 +68,13 @@ export class PresetsComponent implements OnInit {
     this.tempVal = this.currData.find((data: { Hour: String, Temperature: number; }) => data.Hour == hourKey).Temperature;
   }
 
-  dupa() {
+  updateChart() {
+    this.currData.find((data: { Hour: String, Temperature: number; }) => data.Hour == this.currHour).Temperature = this.tempVal;
+    this.refreshChart();
+  }
 
+  savePreset(){
+    //todo wysłać preset do BE
   }
 
 }

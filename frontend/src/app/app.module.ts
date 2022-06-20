@@ -14,12 +14,15 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {HttpClientModule} from "@angular/common/http";
 import {IgxCategoryChartModule} from "igniteui-angular-charts";
 import {MatInputModule} from "@angular/material/input";
+import { NgChartsModule } from 'ng2-charts';
+import { HistoricComponent } from './historic/historic.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    PresetsComponent
+    PresetsComponent,
+    HistoricComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,8 @@ import {MatInputModule} from "@angular/material/input";
     MatInputModule,
     FormsModule,
     HttpClientModule,
-    IgxCategoryChartModule
+    IgxCategoryChartModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

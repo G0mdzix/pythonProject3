@@ -1,0 +1,26 @@
+<div class="historic">
+  <h1>
+    Please select historical data:
+  </h1>
+
+  <div class="row" style="margin-left: 0px">
+    <mat-form-field appearance="fill">
+      <mat-select (selectionChange)="selectionChanged($event.value)" placeholder="Historical data" formControlName="historical"
+                  single>
+        <mat-option *ngFor="let historicKey of  historicDataList.keys()" [value]="historicKey">
+          {{historicKey}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+  <div *ngIf="isSelected">
+    <div id="chart" style="margin: 10px">
+      <canvas baseChart
+              [data]="lineChartData"
+              [type]="'line'"
+      >
+      </canvas>
+    </div>
+  </div>
+</div>
