@@ -18,11 +18,10 @@ export class HomeComponent implements OnInit {
   eaa = '-77';
   inTemp = '20';
 
-  k_p = '0.0';
-  t_p = '0.0';
-  t_i = '0.0';
-  t_d = '0.0';
-
+  k_p = '1.0';
+  t_p = '2.0';
+  t_i = '3.0';
+  t_d = '4.0';
 
   constructor() {
     setInterval(() => {
@@ -47,6 +46,9 @@ export class HomeComponent implements OnInit {
 
   sendPidSettings(): void {
     //todo
+    debugger;
+    this.toggleEditPid();
+
   }
 
 }

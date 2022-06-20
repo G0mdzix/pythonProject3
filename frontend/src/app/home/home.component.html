@@ -59,79 +59,79 @@
   </div>
   <div class="row">
     <button
+      style="width:170px; height: 40px;"
       (click)="refresh()"
       type="button"
       class="btn btn-primary mr-3">Refresh
     </button>
     <button
       *ngIf="!pid"
+      style="width:170px; height: 40px;"
       (click)="togglePid()"
       type="button" class="btn btn-warning mr-3">Show PID settings
     </button>
 
     <button
       *ngIf="pid"
+      style="width:170px; height: 40px;"
       (click)="togglePid()"
       type="button" class="btn btn-warning mr-3">Hide PID settings
     </button>
 
   </div>
 
-  <div class="row" *ngIf="pid">
+  <div class="row" *ngIf="pid" style="margin-top: 40px">
     <div class="column">
-      <div class="column pidVals">
-        <div class="row desc">
-          <div class="pidHelp">
-            K_p
-          </div>
-          <div class="val">
-            {{k_p}}
-          </div>
-        </div>
+      <div class="row desc">
+        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
+          <mat-label>K_p</mat-label>
+          <input matInput  [ngModel]="k_p" disabled="true">
+        </mat-form-field>
+      </div>
 
-        <div class="row desc">
-          <div class="pidHelp">
-            T_p
-          </div>
-          <div class="val">
-            {{t_p}}
-          </div>
-        </div>
+      <div class="row desc">
+        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
+          <mat-label>T_p</mat-label>
+          <input matInput [ngModel]="t_p" disabled="true">
+        </mat-form-field>
+      </div>
 
-        <div class="row desc">
-          <div class="pidHelp">
-            T_i
-          </div>
-          <div class="val">
-            {{t_i}}
-          </div>
-        </div>
+      <div class="row desc">
+        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
+          <mat-label>T_i</mat-label>
+          <input matInput  [ngModel]="t_i" disabled="true">
+        </mat-form-field>
+      </div>
 
-        <div class="row desc">
-          <div class="pidHelp">
-            T_d
-          </div>
-          <div class="val">
-            {{t_d}}
-          </div>
-        </div>
+      <div class="row desc">
+        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
+          <mat-label>T_d</mat-label>
+          <input matInput  [ngModel]="t_d" disabled="true">
+        </mat-form-field>
+      </div>
 
-        <div class="row" style="float: right">
-          <button
-            style="margin-top: 20px"
-            *ngIf="pid"
-            (click)="toggleEditPid()"
-            type="button" class="btn btn-danger mr-3">Edit PID settings
-          </button>
-        </div>
+      <div class="row" style="float: right">
+        <button
+          style="margin-top: 20px; width:170px; height: 40px;"
+          *ngIf="!editPid"
+          (click)="toggleEditPid()"
+          type="button" class="btn btn-danger mr-3">Edit PID settings
+        </button>
+
+         <button
+          style="margin-top: 20px; width:170px; height: 40px;"
+          *ngIf="editPid"
+          (click)="toggleEditPid()"
+          type="button" class="btn btn-danger mr-3">Hide PID settings
+        </button>
       </div>
     </div>
+
     <div *ngIf="editPid" class="column">
-      <div class="column pidVals">
+      <div class="column">
 
         <div class="row desc">
           <div class="pidHelp">
-            K_p
           </div>
           <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
             <mat-label>K_p</mat-label>
@@ -141,7 +141,6 @@
 
         <div class="row desc">
           <div class="pidHelp">
-            T_p
           </div>
           <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
             <mat-label>T_p</mat-label>
@@ -151,7 +150,6 @@
 
         <div class="row desc">
           <div class="pidHelp">
-            T_i
           </div>
           <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
             <mat-label>T_i</mat-label>
@@ -161,7 +159,6 @@
 
         <div class="row desc">
           <div class="pidHelp">
-            T_d
           </div>
           <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
             <mat-label>T_d</mat-label>
@@ -173,7 +170,7 @@
           <button
             *ngIf="pid"
             (click)="sendPidSettings()"
-            style="margin-top: 20px"
+            style="margin-top: 20px; width:170px; height: 40px;"
             type="button" class="btn btn-success mr-3">Write PID settings
           </button>
         </div>
@@ -181,5 +178,4 @@
       </div>
     </div>
   </div>
-
 </div>
