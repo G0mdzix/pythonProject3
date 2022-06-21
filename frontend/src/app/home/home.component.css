@@ -1,0 +1,46 @@
+.home {
+  margin: 20px;
+  width: 100%;
+  padding: 0px;
+}
+
+.column {
+  padding: 0px;
+  width: 50%;
+  text-align: center;
+}
+
+.row {
+  text-align: center;
+  padding: 0px;
+  margin: 0px;
+  width: available;
+}
+
+.sensorVals {
+  padding: 20px 0px 20px 0px;
+}
+
+.desc {
+  font-size: 22px;
+  font-style: italic;
+}
+
+.val {
+  margin-left: 40px;
+  font-weight: bold;
+  float: right;
+}
+
+.buttons {
+  float: right;
+  margin: 20px;
+}
+.pidHelp{
+  width: 50px;
+}
+.pidVals {
+  padding: 20px 0px 20px 0px;
+}
+
+
