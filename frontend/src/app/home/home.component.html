@@ -110,6 +110,13 @@
         </mat-form-field>
       </div>
 
+      <div class="row desc">
+        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
+          <mat-label>Volume</mat-label>
+          <input matInput  [ngModel]="volume" disabled="true">
+        </mat-form-field>
+      </div>
+
       <div class="row" style="float: right">
         <button
           style="margin-top: 20px; width:170px; height: 40px;"
@@ -163,6 +170,15 @@
           <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
             <mat-label>T_d</mat-label>
             <input matInput value={{t_d}}>
+          </mat-form-field>
+        </div>
+
+        <div class="row desc">
+          <div class="pidHelp">
+          </div>
+          <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
+            <mat-label>Volume</mat-label>
+            <input matInput value={{volume}}>
           </mat-form-field>
         </div>
 

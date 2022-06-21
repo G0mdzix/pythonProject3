@@ -204,9 +204,9 @@ dummyData3 = [
 ];
 
 export let dummyPresetList = new Map<String, Array<any>>();
-dummyPresetList.set('Preset 1', dummyData);
-dummyPresetList.set('Preset 2', dummyData2);
-dummyPresetList.set('Preset 3', dummyData3);
+dummyPresetList.set('Set point 1', dummyData);
+dummyPresetList.set('Set point 2', dummyData2);
+dummyPresetList.set('Set point 3', dummyData3);
 
 let dummyHistoricData;
 dummyHistoricData = [

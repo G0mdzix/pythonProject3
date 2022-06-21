@@ -27,7 +27,7 @@ export class PresetsComponent implements OnInit {
 
   ngOnInit() {
     //todo załadować presety i dane z backendu
-    this.activePreset='Preset 1';
+    this.activePreset='Set point 1';
 
   }
   activatePreset(){
@@ -44,6 +44,7 @@ export class PresetsComponent implements OnInit {
     this.lineChartData = {
       datasets: [
         {
+          stepped: true,
           data: temperatures,
           label: 'Temperature',
         },

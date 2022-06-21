@@ -32,6 +32,7 @@ export class HistoricComponent implements OnInit {
     this.lineChartData = {
       datasets: [
         {
+          stepped: true,
           data: temperatures,
           label: 'Temperature',
         },

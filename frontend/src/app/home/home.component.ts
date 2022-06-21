@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   t_p = '2.0';
   t_i = '3.0';
   t_d = '4.0';
+  volume = '1.5'
 
   constructor() {
     setInterval(() => {
