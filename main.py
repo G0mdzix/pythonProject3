@@ -1,107 +1,73 @@
-from math import sqrt
-import matplotlib.pyplot as plt
-from bokeh.plotting import figure, show
 import numpy as np
-import xlwings as xw
-import csv
-import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.integrate import odeint
 
-
-A = 1.2
-B = 1.005
-Tp = 0.1
-Tsim = 3600
-N = int(Tsim / Tp)
-u_0 = 1.44
-h_target = 26
-
-P_s = 0.15
-k = 0.9
-m = 1.2
-c = 1.005
-L = 0.006 #m w mm 6
-
-k_p = 20 #
-T_i = 5.5 #
-T_d = 5.5 #
 
 h_list = []
-
+h_new = []
 import csv
-
 with open("Zeszyt1.csv") as file:
   csvreader = csv.reader(file)
   print(csvreader)
   print("test@@@@@@@@@@@@@@@@@@@@@@@")
   for row in csvreader:
     #print(row[0])
-    h_list.append(row[0])
+    h_list.append(float(row[0]))
 
-print(float(h_list[0]) - 15)
+  #print (h_list)
 
+# Wartosc temperatury w wybranym momencie czasu
+TEMP_ZEW = h_list[150] # OD jakiego parametru ma zadzialac regulator
+# Parametry symulacji
+T_p = 0.1
+# czas symulacji
+Tsim = 360
+# ilość probek
+N = int(Tsim / T_p)
 
+Ta = 28 + 273.15   # K TEMPERATURA ZADANA JAKA CHCEMY UZYSKAC
 
-
-e_0 = (h_target - float(h_list[0]))
-e_list = [e_0]
-u_n_list = [u_0]
-
-def get_Qd(u_t):
-   return 0.005 * u_t
-
-   # for i in range(N, 287):
-    #    return Tp * A * B * u_t * e_list[i]
-
-def calc_res(n):
-    regulation_error_sum = 0
-    for k in range(1, n):
-        regulation_error_sum += e_list[k]
-    return regulation_error_sum
+def heat(x,t,Q):
 
 
+    #PARAMETRY TERARIUM
+    U = 10.0           # W/m^2-K
+    m = 4.0/1000.0     # kg
+    Cp = 0.5 * 1000.0  # J/kg-K
+    A = 12.0 / 100.0**2 # Area in m^2
+    #STALA
+    alpha = 0.01       # W / % heater
+    eps = 0.9          # Emissivity
+    sigma = 5.67e-8    # Stefan-Boltzman
+    #print(x)
 
-def H_loop(h0,u_n):
-   # h_list.append(h0)
-    u_t = u_0
-    for i in range(N):
-        e_list.append((h_target - float(h_list[i])))
-        u_n = k_p * (e_list[i] + (Tp / T_i) * calc_res(i) + (T_d / Tp) * (e_list[i] - e_list[i - 1]))
-        # Wzor nagrzewnicy: Q = V·ρ·cp·ΔT [kW] Q = T_p*A*B*u_n*e_list[i]
-       # Qd = 0.005 * u_n_list[-1]
-       # temp = Tp * A * B * u_n * e_list[i]
-        temp = ((-P_s * k * (e_list[i]/L) + get_Qd(u_t))/ m * c) - float(h_list[i - 1])
-       # temp = Tp / A * (get_Qd(u_t) - B * sqrt(h_list[0][-1][0])) + h_list[0][-1][0]
-        #temp = Tp / A * (get_Qd(u_t) - B * sqrt(float(h_list[-1]))) + float(h_list[-1])
-        if temp < 0:  #0
-            h_list.append(25)
-        elif temp > 5:  #5
-            h_list.append(26)
-        else:
-            h_list.append(temp)
-        u_t = u_t+u_n/N
+    # okreslanie temperatury do obliczenia
+    T = x[0]+273
+    #print(x[0])
+
+    # Nonlinear Energy Balance
+    dTdt = (1.0/(m*Cp))*(U*A*(Ta-T) \
+            + eps * sigma * A * (Ta**4 - T**4) \
+            + alpha*Q)
+    return dTdt
 
 
 
-def H_list_show():
-    for x in range(len(h_list)):
-        print(x, " ", h_list[x])
+
+Q = 40.0 # Percent Heater (0-100%)
+n = 60*10+1  # Number of second time points (10min)
+time = np.linspace(0,N-1,N) # wektor czasu
+T = odeint(heat,TEMP_ZEW,time,args=(Q,)) # Integrate ODE
+print(T)
 
 
-def Figure():
-    p = figure(title="Wykres h", x_axis_label='N', y_axis_label='h')
-    p.line(list(range(0, N + 1)),h_list ,legend_label="Wykres", color="blue", line_width=2)
-    show(p)
 
 
-def main():
-    h0 = 25.0
-    u_n = 15.0
-    H_loop(h0,u_n)
-    Figure()
-    #print(e_list)
 
+plt.figure(1)
+plt.plot(time,T-20,'b-')
+plt.ylabel('Zajebista temperatura')
+plt.xlabel('czas')
+plt.legend(['Zajebisty wykres)'])
+plt.show()
 
-main()
-
-
-#  temp = Tp / A * (get_Qd(u_t) - B * sqrt(h_list[0][-1][0])) + h_list[0][-1][0]
