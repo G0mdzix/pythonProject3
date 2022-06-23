@@ -1,46 +1,29 @@
 .home {
   margin: 20px;
-  width: 100%;
-  padding: 0px;
 }
 
-.column {
+.parametersColumn {
+  height: available;
+  justify-content: center;
   padding: 0px;
-  width: 50%;
+  width: fit-content;
   text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
-.row {
-  text-align: center;
-  padding: 0px;
-  margin: 0px;
-  width: available;
+.chartColumn {
+  width: 80%;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
-.sensorVals {
-  padding: 20px 0px 20px 0px;
+.runButton {
+  width: 200px;
+  height: 70px;
 }
 
-.desc {
-  font-size: 22px;
-  font-style: italic;
+.formField {
+  width: 250px;
+  height: 60px;
 }
-
-.val {
-  margin-left: 40px;
-  font-weight: bold;
-  float: right;
-}
-
-.buttons {
-  float: right;
-  margin: 20px;
-}
-.pidHelp{
-  width: 50px;
-}
-.pidVals {
-  padding: 20px 0px 20px 0px;
-}
-
-

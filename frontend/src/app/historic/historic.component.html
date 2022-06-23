@@ -1,21 +1,63 @@
-<div class="historic">
-  <h1>
-    Please select historical data:
-  </h1>
+<div class="historical">
+  <div class="row">
+    <div class="parametersColumn">
 
-  <div class="row" style="margin-left: 0px">
-    <mat-form-field appearance="fill">
-      <mat-select (selectionChange)="selectionChanged($event.value)" placeholder="Historical data" formControlName="historical"
-                  single>
-        <mat-option *ngFor="let historicKey of  historicDataList.keys()" [value]="historicKey">
-          {{historicKey}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <div class="row">
+        <h1>
+          Please select historical data:
+        </h1>
+      </div>
 
-  </div>
-  <div *ngIf="isSelected">
-    <div id="chart" style="margin: 10px">
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-select (selectionChange)="selectionChanged($event.value)"
+                      placeholder="Historical simulation"
+                      single>
+            <mat-option *ngFor="let historicKey of  historicDataList.keys()" [value]="historicKey">
+              {{historicKey}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div *ngIf="isSelected">
+        <div class="row">
+          <mat-form-field class="example-full-width " appearance="fill">
+            <mat-label>Volume of terrarium (m³)</mat-label>
+            <input disabled="true" matInput [ngModel]="volume">
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="example-full-width " appearance="fill">
+            <mat-label>K_p</mat-label>
+            <input disabled="true" matInput [ngModel]="k_p">
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="example-full-width " appearance="fill">
+            <mat-label>T_p</mat-label>
+            <input disabled="true" matInput [ngModel]="t_p">
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="example-full-width" style="height: 90px" appearance="fill">
+            <mat-label>T_i</mat-label>
+            <input disabled="true" matInput [ngModel]="t_i">
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="example-full-width " appearance="fill">
+            <mat-label>T_d</mat-label>
+            <input disabled="true" matInput [ngModel]="t_d">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div id=chart class="chartColumn">
       <canvas baseChart
               [data]="lineChartData"
               [type]="'line'"

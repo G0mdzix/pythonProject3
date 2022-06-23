@@ -1,9 +1,11 @@
 <div class="presets">
-  <h1>
-    Editing setpoints
-  </h1>
+  <div class="row">
+    <h1>
+      Editing setpoints
+    </h1>
+  </div>
 
-  <div class="row" style="width: 100%">
+  <div class="row">
 
     <div class="formElement">
       <mat-form-field appearance="fill">
@@ -44,12 +46,13 @@
     </div>
   </div>
 
-  <div id="chart">
-    <canvas baseChart
+
+  <div id="chart" class="chart">
+    <canvas class="chart" baseChart
             [data]="lineChartData"
             [type]="'line'"
     >
     </canvas>
   </div>
-
 </div>
+

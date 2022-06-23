@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {dummyPresetList} from "../../assets/dummyData";
+import {dummySetpointList} from "../../assets/dummyData";
 import {ChartConfiguration} from 'chart.js';
 import {hours} from "../../assets/hours";
 
@@ -13,7 +13,7 @@ export class PresetsComponent implements OnInit {
   lineChartData: ChartConfiguration['data'] | undefined;
 
   hoursSelect = hours;
-  presetList = dummyPresetList;
+  presetList = dummySetpointList;
   isSelected = false;
   currData: any;
   currKey: any;
@@ -24,13 +24,11 @@ export class PresetsComponent implements OnInit {
   }
 
   ngOnInit() {
-    //todo załadować presety i dane z backendu
+    //todo załadować presety
   }
 
   refreshChart() {
-    // @ts-ignore
     let hours = this.currData.map(item => item.Hour);
-    // @ts-ignore
     let temperatures = this.currData.map(item => item.Temperature);
 
     this.lineChartData = {
@@ -67,7 +65,6 @@ export class PresetsComponent implements OnInit {
   }
 
   tempChanged(temperature: number) {
-    debugger;
     this.tempVal = temperature;
     this.currData.find((data: { Hour: String, Temperature: number; }) => data.Hour == this.currHour).Temperature = this.tempVal;
     this.updateChart();

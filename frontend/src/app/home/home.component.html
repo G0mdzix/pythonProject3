@@ -1,66 +1,74 @@
 <div class="home">
-  <div class="column">
+  <div class="row">
+    <div class="parametersColumn">
 
-    <div class="row">
-      <h1>
-        Simulation parameters:
-      </h1>
+      <div class="row">
+        <h1>
+          Simulation parameters:
+        </h1>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-select (selectionChange)="setpointSelectionChanged($event.value)" placeholder="Preset" single>
+            <mat-option *ngFor="let presetKey of presetList.keys()" [value]="presetKey">
+              {{presetKey}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="example-full-width " appearance="fill">
+          <mat-label>Volume of terrarium (m³)</mat-label>
+          <input matInput [ngModel]="volume">
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="example-full-width " appearance="fill">
+          <mat-label>K_p</mat-label>
+          <input matInput [ngModel]="k_p">
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="example-full-width " appearance="fill">
+          <mat-label>T_p</mat-label>
+          <input matInput [ngModel]="t_p">
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="example-full-width" style="height: 90px" appearance="fill">
+          <mat-label>T_i</mat-label>
+          <input matInput [ngModel]="t_i">
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="example-full-width " appearance="fill">
+          <mat-label>T_d</mat-label>
+          <input matInput [ngModel]="t_d">
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <button
+          (click)="runSimulation()"
+          [disabled]="!selectedSetpoint"
+          type="button" class="btn btn-success mr-3 runButton">Run simulation
+        </button>
+      </div>
+
+    </div>
+    <div id=chart class="chartColumn">
+      <canvas baseChart
+              [data]="lineChartData"
+              [type]="'line'"
+      >
+      </canvas>
     </div>
 
-    <div class="row">
-      <mat-form-field appearance="fill">
-        <mat-select (selectionChange)="setpointSelectionChanged($event.value)" placeholder="Preset"
-                    formControlName="preset"
-                    single>
-          <mat-option *ngFor="let presetKey of presetList.keys()" [value]="presetKey">
-            {{presetKey}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>K_p</mat-label>
-        <input matInput [ngModel]="k_p">
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>T_p</mat-label>
-        <input matInput [ngModel]="t_p">
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>T_i</mat-label>
-        <input matInput [ngModel]="t_i">
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>T_d</mat-label>
-        <input matInput [ngModel]="t_d">
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Volume of terrarium</mat-label>
-        <input matInput [ngModel]="volume">
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <button
-        style="width:170px; height: 40px;"
-        (click)="runSimulation()"
-        type="button" class="btn btn-success mr-3">Run simulation
-      </button>
-
-    </div>
   </div>
 </div>

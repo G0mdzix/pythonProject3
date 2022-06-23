@@ -1,5 +1,19 @@
-.historic {
+.historical {
   margin: 20px;
-  width: 100%;
+}
+
+.parametersColumn {
+  height: available;
+  justify-content: center;
   padding: 0px;
+  width: fit-content;
+  text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.chartColumn {
+  width: 80%;
+  margin-left: 20px;
+  margin-right: 20px;
 }
