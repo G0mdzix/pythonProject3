@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {dummyPresetList} from "../../assets/dummyData";
 
 @Component({
   selector: 'app-home',
@@ -7,48 +8,28 @@ import {Component, OnInit} from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  currTime: string | undefined;
-
-  pid = false;
-  editPid = false;
-
-
-  its1 = '-77';
-  its2 = '-77';
-  eaa = '-77';
-  inTemp = '20';
-
+  volume = '1.5'
   k_p = '1.0';
   t_p = '2.0';
   t_i = '3.0';
   t_d = '4.0';
-  volume = '1.5'
+
+  setpoint: any;
+  presetList = dummyPresetList;
 
   constructor() {
-    setInterval(() => {
-      this.currTime = new Date().toString().split(' ')[4];
-    }, 1);
   }
 
   ngOnInit(): void {
   }
 
-  refresh(): void {
-    //todo
+  setpointSelectionChanged(setpoint: String) {
+    this.setpoint = setpoint;
+    //this.currData = this.presetList.get(this.currKey);
+    //this.refreshChart();
   }
 
-  togglePid(): void {
-    this.pid = !this.pid;
-  }
-
-  toggleEditPid(): void {
-    this.editPid = !this.editPid;
-  }
-
-  sendPidSettings(): void {
-    //todo
-    debugger;
-    this.toggleEditPid();
+  runSimulation(): void {
 
   }
 

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {dummyPresetList, hours} from "../../assets/dummyData";
+import {dummyPresetList} from "../../assets/dummyData";
 import {ChartConfiguration} from 'chart.js';
+import {hours} from "../../assets/hours";
 
 @Component({
   selector: 'app-presets',
@@ -11,28 +12,19 @@ export class PresetsComponent implements OnInit {
 
   lineChartData: ChartConfiguration['data'] | undefined;
 
-  isSelected = false;
-  selectedPreset: any;
   hoursSelect = hours;
   presetList = dummyPresetList;
+  isSelected = false;
   currData: any;
   currKey: any;
   currHour: any;
-  editPreset = false;
   tempVal: any;
-  activePreset: any;
 
   constructor() {
   }
 
   ngOnInit() {
     //todo załadować presety i dane z backendu
-    this.activePreset='Set point 1';
-
-  }
-  activatePreset(){
-    this.activePreset=this.currKey;
-    //todo wysłąć do BE
   }
 
   refreshChart() {
@@ -60,10 +52,6 @@ export class PresetsComponent implements OnInit {
     this.refreshChart();
   }
 
-  toggleEditPreset() {
-    this.editPreset = true;
-  }
-
   changeSelectedHour(hourKey: String) {
     this.currHour = hourKey;
     this.tempVal = this.currData.find((data: { Hour: String, Temperature: number; }) => data.Hour == hourKey).Temperature;
@@ -74,8 +62,15 @@ export class PresetsComponent implements OnInit {
     this.refreshChart();
   }
 
-  savePreset(){
+  savePreset() {
     //todo wysłać preset do BE
+  }
+
+  tempChanged(temperature: number) {
+    debugger;
+    this.tempVal = temperature;
+    this.currData.find((data: { Hour: String, Temperature: number; }) => data.Hour == this.currHour).Temperature = this.tempVal;
+    this.updateChart();
   }
 
 }

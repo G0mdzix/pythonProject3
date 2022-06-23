@@ -1,197 +1,66 @@
 <div class="home">
-  <div class="row">
-    <h1>
-      Current time:
-      <br>
-      <div style="font-weight: normal">
-        {{currTime}}
-      </div>
-    </h1>
-  </div>
+  <div class="column">
 
-  <div class="row">
-    <div class="column">
-      <div class="row">
-        <h1>
-          Current temperatures
-        </h1>
-      </div>
-      <div class="column sensorVals">
-        <div class="row desc">
-          Internal temperature sensor 1:
-          <div class="val">
-            {{its1}}°C
-          </div>
-        </div>
-
-        <div class="row desc">
-          Internal temperature sensor 2:
-          <div class="val">
-            {{its2}}°C
-          </div>
-        </div>
-
-        <div class="row desc">
-          External ambient air sensor 1:
-          <div class="val">
-            {{eaa}}°C
-          </div>
-        </div>
-
-      </div>
-    </div>
-    <div class="column">
-      <div class="row">
-        <h1>
-          Setpoints values
-        </h1>
-      </div>
-      <div class="column sensorVals">
-        <div class="row desc">
-          Internal temperature:
-          <div class="val">
-            {{inTemp}}°C
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <button
-      style="width:170px; height: 40px;"
-      (click)="refresh()"
-      type="button"
-      class="btn btn-primary mr-3">Refresh
-    </button>
-    <button
-      *ngIf="!pid"
-      style="width:170px; height: 40px;"
-      (click)="togglePid()"
-      type="button" class="btn btn-warning mr-3">Show PID settings
-    </button>
-
-    <button
-      *ngIf="pid"
-      style="width:170px; height: 40px;"
-      (click)="togglePid()"
-      type="button" class="btn btn-warning mr-3">Hide PID settings
-    </button>
-
-  </div>
-
-  <div class="row" *ngIf="pid" style="margin-top: 40px">
-    <div class="column">
-      <div class="row desc">
-        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
-          <mat-label>K_p</mat-label>
-          <input matInput  [ngModel]="k_p" disabled="true">
-        </mat-form-field>
-      </div>
-
-      <div class="row desc">
-        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
-          <mat-label>T_p</mat-label>
-          <input matInput [ngModel]="t_p" disabled="true">
-        </mat-form-field>
-      </div>
-
-      <div class="row desc">
-        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
-          <mat-label>T_i</mat-label>
-          <input matInput  [ngModel]="t_i" disabled="true">
-        </mat-form-field>
-      </div>
-
-      <div class="row desc">
-        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
-          <mat-label>T_d</mat-label>
-          <input matInput  [ngModel]="t_d" disabled="true">
-        </mat-form-field>
-      </div>
-
-      <div class="row desc">
-        <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
-          <mat-label>Volume</mat-label>
-          <input matInput  [ngModel]="volume" disabled="true">
-        </mat-form-field>
-      </div>
-
-      <div class="row" style="float: right">
-        <button
-          style="margin-top: 20px; width:170px; height: 40px;"
-          *ngIf="!editPid"
-          (click)="toggleEditPid()"
-          type="button" class="btn btn-danger mr-3">Edit PID settings
-        </button>
-
-         <button
-          style="margin-top: 20px; width:170px; height: 40px;"
-          *ngIf="editPid"
-          (click)="toggleEditPid()"
-          type="button" class="btn btn-danger mr-3">Hide PID settings
-        </button>
-      </div>
+    <div class="row">
+      <h1>
+        Simulation parameters:
+      </h1>
     </div>
 
-    <div *ngIf="editPid" class="column">
-      <div class="column">
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-select (selectionChange)="setpointSelectionChanged($event.value)" placeholder="Preset"
+                    formControlName="preset"
+                    single>
+          <mat-option *ngFor="let presetKey of presetList.keys()" [value]="presetKey">
+            {{presetKey}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-        <div class="row desc">
-          <div class="pidHelp">
-          </div>
-          <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
-            <mat-label>K_p</mat-label>
-            <input matInput value={{k_p}}>
-          </mat-form-field>
-        </div>
+    <div class="row">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>K_p</mat-label>
+        <input matInput [ngModel]="k_p">
+      </mat-form-field>
+    </div>
 
-        <div class="row desc">
-          <div class="pidHelp">
-          </div>
-          <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
-            <mat-label>T_p</mat-label>
-            <input matInput value={{t_p}}>
-          </mat-form-field>
-        </div>
+    <div class="row">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>T_p</mat-label>
+        <input matInput [ngModel]="t_p">
+      </mat-form-field>
+    </div>
 
-        <div class="row desc">
-          <div class="pidHelp">
-          </div>
-          <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
-            <mat-label>T_i</mat-label>
-            <input matInput value={{t_i}}>
-          </mat-form-field>
-        </div>
+    <div class="row">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>T_i</mat-label>
+        <input matInput [ngModel]="t_i">
+      </mat-form-field>
+    </div>
 
-        <div class="row desc">
-          <div class="pidHelp">
-          </div>
-          <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
-            <mat-label>T_d</mat-label>
-            <input matInput value={{t_d}}>
-          </mat-form-field>
-        </div>
+    <div class="row">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>T_d</mat-label>
+        <input matInput [ngModel]="t_d">
+      </mat-form-field>
+    </div>
 
-        <div class="row desc">
-          <div class="pidHelp">
-          </div>
-          <mat-form-field class="example-full-width" appearance="fill" style="margin-left: 20px">
-            <mat-label>Volume</mat-label>
-            <input matInput value={{volume}}>
-          </mat-form-field>
-        </div>
+    <div class="row">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Volume of terrarium</mat-label>
+        <input matInput [ngModel]="volume">
+      </mat-form-field>
+    </div>
 
-        <div class="row" style="float: right">
-          <button
-            *ngIf="pid"
-            (click)="sendPidSettings()"
-            style="margin-top: 20px; width:170px; height: 40px;"
-            type="button" class="btn btn-success mr-3">Write PID settings
-          </button>
-        </div>
+    <div class="row">
+      <button
+        style="width:170px; height: 40px;"
+        (click)="runSimulation()"
+        type="button" class="btn btn-success mr-3">Run simulation
+      </button>
 
-      </div>
     </div>
   </div>
 </div>

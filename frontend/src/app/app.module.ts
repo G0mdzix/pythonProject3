@@ -14,8 +14,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {HttpClientModule} from "@angular/common/http";
 import {IgxCategoryChartModule} from "igniteui-angular-charts";
 import {MatInputModule} from "@angular/material/input";
-import { NgChartsModule } from 'ng2-charts';
-import { HistoricComponent } from './historic/historic.component';
+import {NgChartsModule} from 'ng2-charts';
+import {HistoricComponent} from './historic/historic.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,6 @@ import { HistoricComponent } from './historic/historic.component';
     AppRoutingModule,
     MatButtonModule,
     MatButtonToggleModule,
-    MatFormFieldModule,
     MatInputModule,
     FormsModule,
     HttpClientModule,

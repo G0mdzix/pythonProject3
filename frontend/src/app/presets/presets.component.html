@@ -1,81 +1,55 @@
 <div class="presets">
   <h1>
-    Active set point:
-    <div style="font-style:italic">
-      {{activePreset}}
-    </div>
+    Editing setpoints
   </h1>
 
-  <h1>
-    Select set point
-  </h1>
+  <div class="row" style="width: 100%">
 
-  <div class="row" style="margin-left: 0px">
-    <mat-form-field appearance="fill">
-      <mat-select (selectionChange)="selectionChanged($event.value)" placeholder="Preset" formControlName="preset"
-                  single>
-        <mat-option *ngFor="let presetKey of presetList.keys()" [value]="presetKey">
-          {{presetKey}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <button
-      *ngIf="isSelected"
-      style="margin-left: 20px; margin-top: 10px; width: 125px; height: 40px;"
-      (click)="activatePreset()"
-      type="button" class="btn btn-warning mr-3">Make active
-    </button>
-  </div>
-  <div *ngIf="isSelected">
-    <div id="chart" style="margin: 10px">
-      <canvas baseChart
-              [data]="lineChartData"
-              [type]="'line'"
-      >
-      </canvas>
+    <div class="formElement">
+      <mat-form-field appearance="fill">
+        <mat-select (selectionChange)="selectionChanged($event.value)" placeholder="Select preset" single>
+          <mat-option *ngFor="let presetKey of presetList.keys()" [value]="presetKey">
+            {{presetKey}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
-    <div style="margin-left: 10px">
-      <div class="row">
-
-        <div class="column">
-          <mat-form-field appearance="fill">
-            <mat-select (selectionChange)="changeSelectedHour($event.value)" placeholder="Select hour"
-                        formControlName="hours">
-              <mat-option *ngFor="let hour of hoursSelect" [value]="hour">
-                {{hour}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="column">
-          <button
-            style="margin-left: 20px; margin-top: 10px; width: 125px; height: 40px;"
-            (click)="updateChart()"
-            type="button" class="btn btn-primary mr-3">Confirm value
-          </button>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="column">
-          <mat-form-field class="example-full-width" appearance="fill">
-            <input [(ngModel)]="tempVal" matInput [value]="tempVal" type="number" placeholder="Input temperature">
-          </mat-form-field>
-        </div>
-
-        <div class="column">
-          <button
-            style="margin-left: 20px; margin-top: 10px; width: 125px; height: 40px;"
-            (click)="savePreset()"
-            type="button" class="btn btn-success mr-3">Save setpoint
-          </button>
-        </div>
-
-      </div>
+    <div *ngIf="isSelected" class="formElement">
+      <mat-form-field appearance="fill">
+        <mat-select (selectionChange)="changeSelectedHour($event.value)" placeholder="Select hour"
+                    [disabled]="!isSelected">
+          <mat-option *ngFor="let hour of hoursSelect" [value]="hour">
+            {{hour}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
+    <div *ngIf="isSelected" class="formElement">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <input matInput [(ngModel)]="tempVal" (ngModelChange)="tempChanged($event)" [value]="tempVal" type="number"
+               [disabled]="!isSelected"
+               placeholder="Input temperature">
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="isSelected" class="formElement saveButton">
+      <button
+        style="margin-left: 20px; margin-top: 10px; width: 125px; height: 40px;"
+        (click)="savePreset()"
+        [disabled]="!isSelected"
+        type="button" class="btn btn-success mr-3">Save setpoint
+      </button>
+    </div>
   </div>
+
+  <div id="chart">
+    <canvas baseChart
+            [data]="lineChartData"
+            [type]="'line'"
+    >
+    </canvas>
+  </div>
+
 </div>
