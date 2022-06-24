@@ -13,8 +13,8 @@
           <mat-select (selectionChange)="selectionChanged($event.value)"
                       placeholder="Historical simulation"
                       single>
-            <mat-option *ngFor="let historicKey of  historicDataList.keys()" [value]="historicKey">
-              {{historicKey}}
+            <mat-option *ngFor="let historicalKey of  historicalDataList.keys()" [value]="historicalKey">
+              {{historicalKey}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -42,7 +42,7 @@
         </div>
 
         <div class="row">
-          <mat-form-field class="example-full-width" style="height: 90px" appearance="fill">
+          <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>T_i</mat-label>
             <input disabled="true" matInput [ngModel]="t_i">
           </mat-form-field>

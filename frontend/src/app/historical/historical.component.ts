@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {dummyHistoricDatas} from "../../assets/dummyData";
+import {dummyHistoricalDatas} from "../../assets/dummyData";
 import {ChartConfiguration} from "chart.js";
 
 @Component({
-  selector: 'app-historic',
-  templateUrl: './historic.component.html',
-  styleUrls: ['./historic.component.css']
+  selector: 'app-historical',
+  templateUrl: './historical.component.html',
+  styleUrls: ['./historical.component.css']
 })
-export class HistoricComponent implements OnInit {
+export class HistoricalComponent implements OnInit {
 
   lineChartData: ChartConfiguration['data'] | undefined;
 
   isSelected = false;
-  historicDataList = dummyHistoricDatas;
+  historicalDataList = dummyHistoricalDatas;
   currData: any;
   currKey: any;
 
@@ -65,10 +65,10 @@ export class HistoricComponent implements OnInit {
     };
   }
 
-  selectionChanged(historicKey: any) {
+  selectionChanged(historicalKey: any) {
     this.isSelected = true;
-    this.currKey = historicKey;
-    this.currData = this.historicDataList.get(this.currKey);
+    this.currKey = historicalKey;
+    this.currData = this.historicalDataList.get(this.currKey);
     this.refreshChart();
   }
 }

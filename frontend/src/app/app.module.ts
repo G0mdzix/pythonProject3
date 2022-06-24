@@ -15,14 +15,14 @@ import {HttpClientModule} from "@angular/common/http";
 import {IgxCategoryChartModule} from "igniteui-angular-charts";
 import {MatInputModule} from "@angular/material/input";
 import {NgChartsModule} from 'ng2-charts';
-import {HistoricComponent} from './historic/historic.component';
+import {HistoricalComponent} from './historical/historical.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     PresetsComponent,
-    HistoricComponent
+    HistoricalComponent
   ],
   imports: [
     BrowserModule,

@@ -363,10 +363,10 @@ export let historicalData3 = [
   {Hour: "23:30", Background: 17, Setpoint: 22, Temperature: 23},
 ];
 
-export let dummyHistoricDatas = new Map<String, Array<any>>();
-dummyHistoricDatas.set('18/06/2022', historicalData1);
-dummyHistoricDatas.set('19/06/2022', historicalData2);
-dummyHistoricDatas.set('20/06/2022', historicalData3);
+export let dummyHistoricalDatas = new Map<String, Array<any>>();
+dummyHistoricalDatas.set('18/06/2022', historicalData1);
+dummyHistoricalDatas.set('19/06/2022', historicalData2);
+dummyHistoricalDatas.set('20/06/2022', historicalData3);
 
 
 
