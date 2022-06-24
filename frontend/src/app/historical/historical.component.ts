@@ -61,7 +61,7 @@ export class HistoricalComponent implements OnInit {
           label: 'Background temperature',
         },
       ],
-      labels: hours
+      labels: hours //todo przypisz labele z backendu
     };
   }
 

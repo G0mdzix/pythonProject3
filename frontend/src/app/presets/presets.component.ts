@@ -39,7 +39,7 @@ export class PresetsComponent implements OnInit {
           label: 'Temperature',
         },
       ],
-      labels: hours
+      labels: hours //todo przypisz labele z backendu
     };
   }
 

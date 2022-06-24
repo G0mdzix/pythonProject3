@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
           label: 'Background temperature',
         },
       ],
-      labels: hours
+      labels: hours //todo przypisz labele z backendu
     };
   }
 
