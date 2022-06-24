@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {dummyPresetList, hours} from "../../assets/dummyData";
+import {dummySetpointList} from "../../assets/dummyData";
 import {ChartConfiguration} from 'chart.js';
+import {hours} from "../../assets/hours";
 
 @Component({
   selector: 'app-presets',
@@ -11,44 +12,34 @@ export class PresetsComponent implements OnInit {
 
   lineChartData: ChartConfiguration['data'] | undefined;
 
-  isSelected = false;
-  selectedPreset: any;
   hoursSelect = hours;
-  presetList = dummyPresetList;
+  presetList = dummySetpointList;
+  isSelected = false;
   currData: any;
   currKey: any;
   currHour: any;
-  editPreset = false;
   tempVal: any;
-  activePreset: any;
 
   constructor() {
   }
 
   ngOnInit() {
-    //todo załadować presety i dane z backendu
-    this.activePreset='Preset 1';
-
-  }
-  activatePreset(){
-    this.activePreset=this.currKey;
-    //todo wysłąć do BE
+    //todo załadować presety
   }
 
   refreshChart() {
-    // @ts-ignore
     let hours = this.currData.map(item => item.Hour);
-    // @ts-ignore
     let temperatures = this.currData.map(item => item.Temperature);
 
     this.lineChartData = {
       datasets: [
         {
+          stepped: true,
           data: temperatures,
           label: 'Temperature',
         },
       ],
-      labels: hours
+      labels: hours //todo przypisz labele z backendu
     };
   }
 
@@ -57,10 +48,6 @@ export class PresetsComponent implements OnInit {
     this.currKey = presetKey;
     this.currData = this.presetList.get(this.currKey);
     this.refreshChart();
-  }
-
-  toggleEditPreset() {
-    this.editPreset = true;
   }
 
   changeSelectedHour(hourKey: String) {
@@ -73,8 +60,14 @@ export class PresetsComponent implements OnInit {
     this.refreshChart();
   }
 
-  savePreset(){
+  savePreset() {
     //todo wysłać preset do BE
+  }
+
+  tempChanged(temperature: number) {
+    this.tempVal = temperature;
+    this.currData.find((data: { Hour: String, Temperature: number; }) => data.Hour == this.currHour).Temperature = this.tempVal;
+    this.updateChart();
   }
 
 }

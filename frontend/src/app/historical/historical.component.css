@@ -1,4 +1,4 @@
-.home {
+.historical {
   margin: 20px;
 }
 
@@ -16,14 +16,4 @@
   width: 80%;
   margin-left: 20px;
   margin-right: 20px;
-}
-
-.runButton {
-  width: 200px;
-  height: 70px;
-}
-
-.formField {
-  width: 250px;
-  height: 60px;
 }

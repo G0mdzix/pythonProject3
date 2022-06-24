@@ -1,0 +1,68 @@
+<div class="historical">
+  <div class="row">
+    <div class="parametersColumn">
+
+      <div class="row">
+        <h1>
+          Please select historical data:
+        </h1>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-select (selectionChange)="selectionChanged($event.value)"
+                      placeholder="Historical simulation"
+                      single>
+            <mat-option *ngFor="let historicalKey of  historicalDataList.keys()" [value]="historicalKey">
+              {{historicalKey}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div *ngIf="isSelected">
+        <div class="row">
+          <mat-form-field class="example-full-width " appearance="fill">
+            <mat-label>Volume of terrarium (m³)</mat-label>
+            <input disabled="true" matInput [ngModel]="volume">
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="example-full-width " appearance="fill">
+            <mat-label>K_p</mat-label>
+            <input disabled="true" matInput [ngModel]="k_p">
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="example-full-width " appearance="fill">
+            <mat-label>T_p</mat-label>
+            <input disabled="true" matInput [ngModel]="t_p">
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>T_i</mat-label>
+            <input disabled="true" matInput [ngModel]="t_i">
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="example-full-width " appearance="fill">
+            <mat-label>T_d</mat-label>
+            <input disabled="true" matInput [ngModel]="t_d">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div id=chart class="chartColumn">
+      <canvas baseChart
+              [data]="lineChartData"
+              [type]="'line'"
+      >
+      </canvas>
+    </div>
+  </div>
+</div>
