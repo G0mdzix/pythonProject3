@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ChartConfiguration} from 'chart.js';
 import {ConnectionService} from "../connection/connection.service";
-import {hours} from "../../assets/hours";
 
 @Component({
   selector: 'app-setpoints',
@@ -13,7 +12,7 @@ export class SetpointsComponent implements OnInit {
 
   lineChartData: ChartConfiguration['data'] | undefined;
 
-  hoursSelect = hours;
+  hoursSelect: any;
   selectedData: any;
   selectedSetpoint: any;
   currHour: any;
@@ -27,6 +26,7 @@ export class SetpointsComponent implements OnInit {
     this.connectionService.getSetpoints().subscribe(
       (data) => {
         this.setpointList = data;
+        this.hoursSelect = data[0].Data.map(item => item.Hour);
       }
     );
   }

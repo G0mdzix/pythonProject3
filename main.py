@@ -11,7 +11,7 @@ from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
 
-from dummyData import dummySetpoints, historicalData, backgroundTemperature, exampleSimulation
+from dummyData import dummySetpoints, historicalData, backgroundTemperature, exampleSimulation, exampleSimulation2
 
 # Wzor nagrzewnicy: Q = V·ρ·cp·ΔT [kW]
 # V – strumień objętości powietrza [m³/s]; = u_n?
@@ -310,7 +310,7 @@ setpoint_list = dummySetpoints
 
 
 # todo zapis/odczyt z bazy
-
+counter=0
 @app.get("/setpoints")
 async def get_setpoints():
     return setpoint_list
@@ -342,7 +342,12 @@ async def run(params: Request):
     t_p = results['t_p']
     t_d = results['t_d']
     t_i = results['t_i']
-    return exampleSimulation
+    global counter
+    counter+=1
+    if(counter%2):
+        return exampleSimulation2
+    else:
+        return exampleSimulation
 
 
 # Press the green button in the gutter to run the script.
