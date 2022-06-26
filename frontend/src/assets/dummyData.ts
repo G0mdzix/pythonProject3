@@ -364,9 +364,9 @@ export let historicalData3 = [
 ];
 
 export let dummyHistoricalDatas = new Map<String, Array<any>>();
-dummyHistoricalDatas.set('18/06/2022', historicalData1);
-dummyHistoricalDatas.set('19/06/2022', historicalData2);
-dummyHistoricalDatas.set('20/06/2022', historicalData3);
+dummyHistoricalDatas.set('18/06/2022 18:05:20', historicalData1);
+dummyHistoricalDatas.set('19/06/2022 19:00:00', historicalData2);
+dummyHistoricalDatas.set('20/06/2022 21:21:21', historicalData3);
 
 
 

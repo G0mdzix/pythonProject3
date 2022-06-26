@@ -4,7 +4,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
-import {PresetsComponent} from './presets/presets.component';
+import {SetpointsComponent} from './setpoints/setpoints.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -21,8 +21,8 @@ import {HistoricalComponent} from './historical/historical.component';
   declarations: [
     AppComponent,
     HomeComponent,
-    PresetsComponent,
-    HistoricalComponent
+    SetpointsComponent,
+    HistoricalComponent,
   ],
   imports: [
     BrowserModule,

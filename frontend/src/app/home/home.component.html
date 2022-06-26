@@ -11,9 +11,9 @@
       <div class="row">
         <mat-form-field appearance="fill">
           <mat-select (selectionChange)="setpointSelectionChanged($event.value)" placeholder="Preset" single>
-            <mat-option *ngFor="let presetKey of presetList.keys()" [value]="presetKey">
-              {{presetKey}}
-            </mat-option>
+           <mat-option *ngFor="let setpoint of setpointList" [value]="setpoint">
+            {{setpoint['Setpoint']}}
+          </mat-option>
           </mat-select>
         </mat-form-field>
       </div>

@@ -1,10 +1,17 @@
+import string
+
 import matplotlib.pyplot as plt
-import math
+import uvicorn
 from bokeh.layouts import column, row
 from bokeh.models import CustomJS, Slider, CheckboxGroup, PreText, TextInput
 
 import numpy as np
 from bokeh.plotting import ColumnDataSource, figure, show
+from fastapi import FastAPI, Request
+from pydantic import BaseModel
+from starlette.middleware.cors import CORSMiddleware
+
+from dummyData import dummySetpoints, historicalData, backgroundTemperature, exampleSimulation
 
 # Wzor nagrzewnicy: Q = V·ρ·cp·ΔT [kW]
 # V – strumień objętości powietrza [m³/s]; = u_n?
@@ -18,23 +25,23 @@ from bokeh.plotting import ColumnDataSource, figure, show
 # ΔT – roznica temperatur czyli do zmiennych nalezy dodac np.: T1 i T2
 
 # nizej polaczenie z MySQL
-import mysql.connector
+# import mysql.connector
+#
+# mydb = mysql.connector.connect(
+#     host="localhost",
+#     user="iss",
+#     password="iss",
+#     database="iss_projekt"
+# )
+#
+# mycursor = mydb.cursor()
+#
+# mycursor.execute("SELECT * FROM ambienttemp")
+#
+# myresult = mycursor.fetchall()
 
-mydb = mysql.connector.connect(
-    host="localhost",
-    user="iss",
-    password="iss",
-    database="iss_projekt"
-)
-
-mycursor = mydb.cursor()
-
-mycursor.execute("SELECT * FROM ambienttemp")
-
-myresult = mycursor.fetchall()
-
-for x in myresult:
-    print("czas: ", x[1], "temperatura: ", x[2])
+# for x in myresult:
+#     print("czas: ", x[1], "temperatura: ", x[2])
 
 # gęstość powietrza [1,2 kg/m³]
 A = 1.2
@@ -110,7 +117,7 @@ def generate_PID_data():
         # Qd = calc_doplyw(u_n_list[-1])
         Qd = u_n_list[-1]
         # Wzor nagrzewnicy: Q = V·ρ·cp·ΔT [kW] Q = T_p*A*B*u_n*e_list[i]
-        #h_new = (T_p / A) * (Qd - B * math.sqrt(h_list[-1])) + h_list[-1]
+        # h_new = (T_p / A) * (Qd - B * math.sqrt(h_list[-1])) + h_list[-1]
         h_new = T_p * A * B * u_n * e_list[i]
         if h_new < 0:
             h_new = 0
@@ -174,7 +181,7 @@ def pid_bokeh():
     h_0_slider = Slider(start=0, end=50, value=4, step=.1, title="h_0")
     u_n_slider = Slider(start=0, end=100, value=5, step=.1, title="u_n")
     k_p_slider = Slider(start=0.01, end=200.0, value=20.0, step=0.01, title="k_p")
-    t_p_slider = Slider(start=300, end=600, value=300, step=300, title="T_p") #constant for now.
+    t_p_slider = Slider(start=300, end=600, value=300, step=300, title="T_p")  # constant for now.
     t_i_slider = Slider(start=1, end=50, value=1.5, step=0.1, title="T_i")
     t_d_slider = Slider(start=1, end=50, value=2.5, step=0.1, title="T_d")
 
@@ -287,8 +294,57 @@ def pid_bokeh():
     show(layout)
 
 
+origins = ["*"]
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+setpoint_list = dummySetpoints
+
+
+# todo zapis/odczyt z bazy
+
+@app.get("/setpoints")
+async def get_setpoints():
+    return setpoint_list
+
+
+@app.post("/setpoints")
+async def get_setpoints(new_setpoints: Request):
+    results = await new_setpoints.json()
+    global setpoint_list
+    setpoint_list = results
+
+
+@app.get("/historical")
+async def get_historical():
+    return historicalData
+
+
+@app.get("/background")
+async def get_background():
+    return backgroundTemperature
+
+
+@app.put("/")
+async def run(params: Request):
+    results = await params.json()
+    setpoint = results['setpoint']
+    v = results['v']
+    k_p = results['k_p']
+    t_p = results['t_p']
+    t_d = results['t_d']
+    t_i = results['t_i']
+    return exampleSimulation
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # pid_local_matplotlib()
-
-    pid_bokeh()
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, log_level="info")

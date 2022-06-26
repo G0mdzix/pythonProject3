@@ -1,13 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {backgroundTemperatures, dummySetpointList, exampleSimulation} from "../../assets/dummyData";
 import {ChartConfiguration, ChartDataset} from "chart.js";
-import {hours} from "../../assets/hours";
 import {BaseChartDirective} from "ng2-charts";
+import {ConnectionService} from "../connection/connection.service";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers: [ConnectionService]
 })
 export class HomeComponent implements OnInit {
 
@@ -21,18 +22,46 @@ export class HomeComponent implements OnInit {
   t_d = '4.0';
 
   selectedSetpoint: any;
-  presetList = dummySetpointList;
-  backgroundTemperatures = backgroundTemperatures;
+  setpointList: any
+  backgroundTemperatures: any;
   dummyResponse = exampleSimulation;
+  simulationTemperatures: any;
 
-  constructor() {
+  constructor(private connectionService: ConnectionService) {
   }
 
   ngOnInit(): void {
-    //todo załaduj dane o tle
-    //todo załąduj dostępne presety
 
+    this.connectionService.getBackground().subscribe(
+      (data) => {
+        this.backgroundTemperatures = data;
+      }
+    );
+
+    this.connectionService.getSetpoints().subscribe(
+      (data) => {
+        this.setpointList = data;
+      }
+    );
+
+    this.lineChartData = {
+      datasets: [
+        {
+          stepped: true,
+          data: null,
+          label: 'Please select preset first',
+        },
+      ],
+      labels: null
+    };
+  }
+
+  setpointSelectionChanged(selectedSetpoint: any) {
+    this.selectedSetpoint = selectedSetpoint;
+
+    let setpointTemperatures = this.selectedSetpoint.Data.map(item => item.Temperature);
     let temperatures = this.backgroundTemperatures.map(item => item.Temperature);
+    let hours = this.backgroundTemperatures.map(item => item.Hour);
 
     this.lineChartData = {
       datasets: [
@@ -41,41 +70,22 @@ export class HomeComponent implements OnInit {
           data: temperatures,
           label: 'Background temperature',
         },
+        {
+          stepped: true,
+          data: setpointTemperatures,
+          label: this.selectedSetpoint.Setpoint + ' temperature',
+        },
       ],
-      labels: hours //todo przypisz labele z backendu
+      labels: hours
     };
+
   }
 
-  setpointSelectionChanged(selectedSetpoint: String) {
-    this.selectedSetpoint = selectedSetpoint;
+  async runSimulation(): Promise<void> {
+    this.connectionService.runSimulation(this.selectedSetpoint, this.volume, this.k_p, this.t_p, this.t_i, this.t_d);
+    this.simulationTemperatures = this.connectionService.simulation;
 
-    let setpointTemperatures = this.presetList.get(this.selectedSetpoint).map(item => item.Temperature);
-
-    let newData: ChartDataset<'line'> = {
-      stepped: true,
-      data: setpointTemperatures,
-      label: this.selectedSetpoint + ' temperature',
-    }
-
-    if (this.lineChartData?.datasets[1]) {
-      // @ts-ignore
-      this.lineChartData?.datasets[1] = newData;
-    } else {
-      this.lineChartData?.datasets.push(newData);
-    }
-
-    if (this.lineChartData?.datasets[2]) {
-      // @ts-ignore
-      this.lineChartData?.datasets[2].hidden = true;
-    }
-
-    this.chart.chart?.update();
-  }
-
-  runSimulation(): void {
-    //todo odbierz dane
-
-    let simulationTemperatures = this.dummyResponse.map(item => item.Temperature);
+    let simulationTemperatures = this.simulationTemperatures.map(item => item.Temperature);
 
     let newData: ChartDataset<'line'> = {
       stepped: true,

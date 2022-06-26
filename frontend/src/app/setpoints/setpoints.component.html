@@ -1,4 +1,4 @@
-<div class="presets">
+<div class="setpoints">
   <div class="row">
     <h1>
       Editing setpoints
@@ -10,17 +10,17 @@
     <div class="formElement">
       <mat-form-field appearance="fill">
         <mat-select (selectionChange)="selectionChanged($event.value)" placeholder="Select preset" single>
-          <mat-option *ngFor="let presetKey of presetList.keys()" [value]="presetKey">
-            {{presetKey}}
+          <mat-option *ngFor="let setpoint of setpointList" [value]="setpoint">
+            {{setpoint['Setpoint']}}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
 
-    <div *ngIf="isSelected" class="formElement">
+    <div *ngIf="selectedSetpoint" class="formElement">
       <mat-form-field appearance="fill">
         <mat-select (selectionChange)="changeSelectedHour($event.value)" placeholder="Select hour"
-                    [disabled]="!isSelected">
+                    >
           <mat-option *ngFor="let hour of hoursSelect" [value]="hour">
             {{hour}}
           </mat-option>
@@ -28,19 +28,17 @@
       </mat-form-field>
     </div>
 
-    <div *ngIf="isSelected" class="formElement">
+    <div *ngIf="selectedSetpoint" class="formElement">
       <mat-form-field class="example-full-width" appearance="fill">
         <input matInput [(ngModel)]="tempVal" (ngModelChange)="tempChanged($event)" [value]="tempVal" type="number"
-               [disabled]="!isSelected"
                placeholder="Input temperature">
       </mat-form-field>
     </div>
 
-    <div *ngIf="isSelected" class="formElement saveButton">
+    <div *ngIf="selectedSetpoint" class="formElement saveButton">
       <button
         style="margin-left: 20px; margin-top: 10px; width: 125px; height: 40px;"
         (click)="savePreset()"
-        [disabled]="!isSelected"
         type="button" class="btn btn-success mr-3">Save setpoint
       </button>
     </div>
