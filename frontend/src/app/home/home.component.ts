@@ -14,11 +14,11 @@ export class HomeComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   lineChartData: ChartConfiguration['data'] | undefined;
 
-  volume = '1.5'
-  k_p = '1.0'; //todo jakie domyślne nastawy regulatora?
-  t_p = '2.0';
-  t_i = '3.0';
-  t_d = '4.0';
+  volume = 1.5
+  k_p = 1.0 //todo jakie domyślne nastawy regulatora?
+  t_p = 2.2;
+  t_i = 3.0;
+  t_d = 4.5;
 
   selectedSetpoint: any;
   setpointList: any
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  async runSimulation(): Promise<void> {
+  runSimulation(): void {
     this.connectionService.runSimulation(this.selectedSetpoint, this.volume, this.k_p, this.t_p, this.t_i, this.t_d).subscribe(
       (data) => {
         this.simulationTemperatures = data;
@@ -101,4 +101,23 @@ export class HomeComponent implements OnInit {
   }
 
 
+  volumeChanged(volume: any) {
+    this.volume = volume;
+  }
+
+  kpChanged(k_p: any) {
+    this.k_p = k_p;
+  }
+
+  tpChanged(t_p: any) {
+    this.t_p = t_p;
+  }
+
+  tiChanged(t_i: any) {
+    this.t_i = t_i;
+  }
+
+  tdChanged(t_d: any) {
+    this.t_d = t_d;
+  }
 }

@@ -11,45 +11,45 @@
       <div class="row">
         <mat-form-field appearance="fill">
           <mat-select (selectionChange)="setpointSelectionChanged($event.value)" placeholder="Preset" single>
-           <mat-option *ngFor="let setpoint of setpointList" [value]="setpoint">
-            {{setpoint['Setpoint']}}
-          </mat-option>
+            <mat-option *ngFor="let setpoint of setpointList" [value]="setpoint">
+              {{setpoint['Setpoint']}}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
       <div class="row">
         <mat-form-field class="example-full-width " appearance="fill">
+          <input matInput type="number" name="volume" [ngModel]="this.volume" (ngModelChange)="volumeChanged($event)">
           <mat-label>Volume of terrarium (m³)</mat-label>
-          <input matInput [ngModel]="volume">
         </mat-form-field>
       </div>
 
       <div class="row">
         <mat-form-field class="example-full-width " appearance="fill">
+          <input matInput type="number" name="k_p" [ngModel]="this.k_p" (ngModelChange)="kpChanged($event)">
           <mat-label>K_p</mat-label>
-          <input matInput [ngModel]="k_p">
         </mat-form-field>
       </div>
 
       <div class="row">
         <mat-form-field class="example-full-width " appearance="fill">
+          <input matInput type="number" name="t_p" [ngModel]="this.t_p" (ngModelChange)="tpChanged($event)">
           <mat-label>T_p</mat-label>
-          <input matInput [ngModel]="t_p">
         </mat-form-field>
       </div>
 
       <div class="row">
         <mat-form-field class="example-full-width" appearance="fill">
+          <input matInput type="number" name="t_i" [ngModel]="this.t_i" (ngModelChange)="tiChanged($event)">
           <mat-label>T_i</mat-label>
-          <input matInput [ngModel]="t_i">
         </mat-form-field>
       </div>
 
       <div class="row">
         <mat-form-field class="example-full-width " appearance="fill">
+          <input matInput type="number" name="t_d" [ngModel]="this.t_d" (ngModelChange)="tdChanged($event)">
           <mat-label>T_d</mat-label>
-          <input matInput [ngModel]="t_d">
         </mat-form-field>
       </div>
 

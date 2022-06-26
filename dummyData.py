@@ -268,13 +268,13 @@ historicalData2 = [
     {"Hour": "23:30", "Background": 17, "Setpoint": 22, "Temperature": 23},
 ]
 
-historicalData = [{"Date": "18/06/2022 18:05:20",
-                   "Parameters": historicalParameter1,
-                   "Data": historicalData1},
-                  {"Date": "19/06/2022 12:25:23",
-                   "Parameters": historicalParameter2,
-                   "Data": historicalData2}
-                  ]
+dummyHistoricalData = [{"Date": "18/06/2022 18:05:20",
+                        "Parameters": historicalParameter1,
+                        "Data": historicalData1},
+                       {"Date": "19/06/2022 12:25:23",
+                        "Parameters": historicalParameter2,
+                        "Data": historicalData2}
+                       ]
 
 backgroundTemperature = [
     {"Hour": "00:00", "Temperature": 16},

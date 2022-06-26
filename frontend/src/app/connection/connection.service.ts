@@ -26,8 +26,16 @@ export class ConnectionService {
     return this.http.get(this.API_URL + 'background');
   }
 
-  runSimulation(selectedSetpoint: any, v: string, k_p: string, t_p: string, t_i: string, t_d: string) {
-    let params = {"setpoint":selectedSetpoint.Data.map(item => item.Temperature), "v": v, "k_p": k_p, "t_p": t_p, "t_i": t_i, "t_d": t_d}
+  runSimulation(selectedSetpoint: any, v: number, k_p: number, t_p: number, t_i: number, t_d: number) {
+    debugger;
+    let params = {
+      "setpoint": selectedSetpoint.Data.map(item => item.Temperature),
+      "v": v,
+      "k_p": k_p,
+      "t_p": t_p,
+      "t_i": t_i,
+      "t_d": t_d
+    }
     return this.http.put(this.API_URL, params);
   }
 }

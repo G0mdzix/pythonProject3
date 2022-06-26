@@ -1,4 +1,4 @@
-import string
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import uvicorn
@@ -11,7 +11,7 @@ from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
 
-from dummyData import dummySetpoints, historicalData, backgroundTemperature, exampleSimulation, exampleSimulation2
+from dummyData import dummySetpoints, dummyHistoricalData, backgroundTemperature, exampleSimulation, exampleSimulation2
 
 # Wzor nagrzewnicy: Q = V·ρ·cp·ΔT [kW]
 # V – strumień objętości powietrza [m³/s]; = u_n?
@@ -307,10 +307,12 @@ app.add_middleware(
 )
 
 setpoint_list = dummySetpoints
-
+historicalData = dummyHistoricalData
 
 # todo zapis/odczyt z bazy
-counter=0
+counter = 0
+
+
 @app.get("/setpoints")
 async def get_setpoints():
     return setpoint_list
@@ -325,7 +327,7 @@ async def get_setpoints(new_setpoints: Request):
 
 @app.get("/historical")
 async def get_historical():
-    return historicalData
+    return dummyHistoricalData
 
 
 @app.get("/background")
@@ -335,19 +337,33 @@ async def get_background():
 
 @app.put("/")
 async def run(params: Request):
+    global counter
+    global dummyHistoricalData
+
     results = await params.json()
-    setpoint = results['setpoint']
+    setpoints = results['setpoint']
     v = results['v']
     k_p = results['k_p']
     t_p = results['t_p']
     t_d = results['t_d']
     t_i = results['t_i']
-    global counter
-    counter+=1
-    if(counter%2):
-        return exampleSimulation2
-    else:
-        return exampleSimulation
+
+    newParams = {
+        "v": v, "k_p": k_p, "t_p": t_p, "t_i": t_d, "t_d": t_i
+    }
+
+    newHistoricalData = exampleSimulation
+
+    for i in range(len(setpoints)):
+        newHistoricalData[i]["Setpoint"] = setpoints[i]
+        newHistoricalData[i]["Background"] = backgroundTemperature[i]["Temperature"]
+
+    newHistorical = {"Date": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+                     "Parameters": newParams,
+                     "Data": newHistoricalData}  # todo wywołać symulację i zapisać dane
+    dummyHistoricalData.append(newHistorical)
+
+    return exampleSimulation
 
 
 # Press the green button in the gutter to run the script.
